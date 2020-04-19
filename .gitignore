@@ -1,0 +1,12 @@
+﻿#############
+## Idea
+#############
+.idea/
+.idea
+out/
+lib/
+JavaRushPlugin.properties
+JavaRushTasks.iml
+Instruction.png
+*.log
+*.log.*
