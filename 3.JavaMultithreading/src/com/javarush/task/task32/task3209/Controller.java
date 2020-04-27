@@ -19,26 +19,26 @@ public class Controller {
         return document;
     }
 
-    public void init(){
+    public void init() {
         createNewDocument();
     }
 
-    public void resetDocument(){
+    public void resetDocument() {
         UndoableEditListener listener = view.getUndoListener();
         if (document != null) {
             document.removeUndoableEditListener(listener);
         }
-            document = (HTMLDocument) new HTMLEditorKit().createDefaultDocument();
-            document.addUndoableEditListener(listener);
-            view.update();
+        document = (HTMLDocument) new HTMLEditorKit().createDefaultDocument();
+        document.addUndoableEditListener(listener);
+        view.update();
     }
 
-    public void setPlainText(String text){
+    public void setPlainText(String text) {
         try {
             resetDocument();
             StringReader reader = new StringReader(text);
             new HTMLEditorKit().read(reader, document, 0);
-        } catch (Exception e){
+        } catch (Exception e) {
             ExceptionHandler.log(e);
         }
     }
@@ -53,7 +53,7 @@ public class Controller {
         return writer.toString();
     }
 
-    public void exit(){
+    public void exit() {
         System.exit(0);
     }
 
@@ -78,12 +78,12 @@ public class Controller {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new HTMLFileFilter());
         int status = fileChooser.showOpenDialog(view);
-        if (status == JFileChooser.APPROVE_OPTION){
+        if (status == JFileChooser.APPROVE_OPTION) {
             currentFile = fileChooser.getSelectedFile();
             resetDocument();
             view.setTitle(currentFile.getName());
 
-            try(FileReader reader = new FileReader(currentFile)){
+            try (FileReader reader = new FileReader(currentFile)) {
                 new HTMLEditorKit().read(reader, document, 0);
                 view.resetUndo();
             } catch (Exception e) {
@@ -94,10 +94,10 @@ public class Controller {
 
     public void saveDocument() {
         view.selectHtmlTab();
-        if (currentFile == null){
+        if (currentFile == null) {
             saveDocumentAs();
         } else {
-            try(FileWriter writer = new FileWriter(currentFile)){
+            try (FileWriter writer = new FileWriter(currentFile)) {
                 new HTMLEditorKit().write(writer, document, 0, document.getLength());
             } catch (Exception e) {
                 ExceptionHandler.log(e);
@@ -110,11 +110,11 @@ public class Controller {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new HTMLFileFilter());
         int status = fileChooser.showSaveDialog(view);
-        if (status == JFileChooser.APPROVE_OPTION){
+        if (status == JFileChooser.APPROVE_OPTION) {
             currentFile = fileChooser.getSelectedFile();
             view.setTitle(currentFile.getName());
 
-            try(FileWriter writer = new FileWriter(currentFile)){
+            try (FileWriter writer = new FileWriter(currentFile)) {
                 new HTMLEditorKit().write(writer, document, 0, document.getLength());
             } catch (Exception e) {
                 ExceptionHandler.log(e);

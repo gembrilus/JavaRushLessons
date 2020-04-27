@@ -16,7 +16,7 @@ public class SubscriptAction extends StyledEditorKit.StyledTextAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         JEditorPane editor = getEditor(event);
-        if (editor != null){
+        if (editor != null) {
             MutableAttributeSet mutableAttributeSet = getStyledEditorKit(editor).getInputAttributes();
             SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
             StyleConstants.setSubscript(simpleAttributeSet, !StyleConstants.isSubscript(mutableAttributeSet));

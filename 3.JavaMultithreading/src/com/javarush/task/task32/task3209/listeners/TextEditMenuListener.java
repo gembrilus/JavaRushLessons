@@ -18,7 +18,7 @@ public class TextEditMenuListener implements MenuListener {
     @Override
     public void menuSelected(MenuEvent event) {
         JMenu menu = (JMenu) event.getSource();
-        for(Component menuItem: menu.getMenuComponents()){
+        for (Component menuItem : menu.getMenuComponents()) {
             menuItem.setEnabled(view.isHtmlTabSelected());
         }
     }

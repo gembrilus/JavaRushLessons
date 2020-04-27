@@ -10,9 +10,9 @@ public class HTMLFileFilter extends FileFilter {
         String suffix = f.getName().replaceFirst("^\\S+\\.+", "");
         if (
                 f.isDirectory() ||
-                suffix.equalsIgnoreCase("html") ||
-                suffix.equalsIgnoreCase("htm")
-        ){
+                        suffix.equalsIgnoreCase("html") ||
+                        suffix.equalsIgnoreCase("htm")
+        ) {
             return true;
         }
         return false;

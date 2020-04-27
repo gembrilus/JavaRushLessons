@@ -85,19 +85,31 @@ public class View extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         String action = event.getActionCommand();
-        switch (action){
-            case "Новый": controller.createNewDocument(); break;
-            case "Открыть" : controller.openDocument(); break;
-            case "Сохранить" : controller.saveDocument(); break;
-            case "Сохранить как..." : controller.saveDocumentAs(); break;
-            case "Выход" : exit(); break;
-            case "О программе" : showAbout(); break;
+        switch (action) {
+            case "Новый":
+                controller.createNewDocument();
+                break;
+            case "Открыть":
+                controller.openDocument();
+                break;
+            case "Сохранить":
+                controller.saveDocument();
+                break;
+            case "Сохранить как...":
+                controller.saveDocumentAs();
+                break;
+            case "Выход":
+                exit();
+                break;
+            case "О программе":
+                showAbout();
+                break;
         }
     }
 
     public void selectedTabChanged() {
         int position = tabbedPane.getSelectedIndex();
-        if (position == 0){
+        if (position == 0) {
             controller.setPlainText(plainTextPane.getText());
         } else {
             plainTextPane.setText(controller.getPlainText());
@@ -105,22 +117,22 @@ public class View extends JFrame implements ActionListener {
         resetUndo();
     }
 
-    public void update(){
+    public void update() {
         htmlTextPane.setDocument(controller.getDocument());
     }
 
-    public void undo(){
+    public void undo() {
         try {
             undoManager.undo();
-        } catch (Exception e){
+        } catch (Exception e) {
             ExceptionHandler.log(e);
         }
     }
 
-    public void redo(){
+    public void redo() {
         try {
             undoManager.redo();
-        } catch (Exception e){
+        } catch (Exception e) {
             ExceptionHandler.log(e);
         }
     }
@@ -133,20 +145,20 @@ public class View extends JFrame implements ActionListener {
         return undoManager.canRedo();
     }
 
-    public void resetUndo(){
+    public void resetUndo() {
         undoManager.discardAllEdits();
     }
 
-    public boolean isHtmlTabSelected(){
+    public boolean isHtmlTabSelected() {
         return tabbedPane.getSelectedIndex() == 0;
     }
 
-    public void selectHtmlTab(){
+    public void selectHtmlTab() {
         tabbedPane.setSelectedIndex(0);
         resetUndo();
     }
 
-    public void showAbout(){
+    public void showAbout() {
         JOptionPane.showMessageDialog(
                 this,
                 "Редактор HTML - разберись сам! )",

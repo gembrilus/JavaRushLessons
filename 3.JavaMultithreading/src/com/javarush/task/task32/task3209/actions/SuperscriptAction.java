@@ -9,14 +9,14 @@ import java.awt.event.ActionEvent;
 
 public class SuperscriptAction extends StyledEditorKit.StyledTextAction {
 
-    public SuperscriptAction(){
+    public SuperscriptAction() {
         super(StyleConstants.Superscript.toString());
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         JEditorPane editor = getEditor(event);
-        if (editor != null){
+        if (editor != null) {
             MutableAttributeSet mutableAttributeSet = getStyledEditorKit(editor).getInputAttributes();
             SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
             StyleConstants.setSuperscript(simpleAttributeSet, !StyleConstants.isSuperscript(mutableAttributeSet));

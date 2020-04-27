@@ -9,7 +9,7 @@ public class RedoAction extends AbstractAction {
 
     private View view;
 
-    public RedoAction(View view){
+    public RedoAction(View view) {
         this.view = view;
     }
 
