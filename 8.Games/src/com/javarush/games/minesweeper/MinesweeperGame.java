@@ -113,9 +113,6 @@ public class MinesweeperGame extends Game {
         countMineNeighbors();
     }
 
-    private boolean isField(int x, int y){
-        return x >= 0 && x < SIDE && y >= 0 && y < SIDE;
-    }
 
     @Override
     public void initialize() {
@@ -125,7 +122,6 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        if (!isField(x, y)) return;
         if(isGameStopped){
             restart();
             return;
@@ -135,7 +131,6 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        if(!isField(x, y)) return;
         markTile(x, y);
     }
 }

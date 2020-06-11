@@ -1,6 +1,7 @@
 package com.javarush.games.snake;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
 
 import java.util.ArrayList;
 import java.util.Collections;

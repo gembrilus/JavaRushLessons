@@ -35,6 +35,13 @@ public class RacerGame extends Game {
             drawScene();
             return;
         }
+        if(finishLine.isCrossed(player)){
+            win();
+            drawScene();
+            return;
+        }
+        score -= 5;
+        setScore(score);
         moveAll();
         roadManager.generateNewRoadObjects(this);
         drawScene();
@@ -67,6 +74,7 @@ public class RacerGame extends Game {
 
     private void createGame() {
         isGameStopped = false;
+        score = 3500;
         setTurnTimer(40);
         roadMarking = new RoadMarking();
         player = new PlayerCar();
@@ -74,6 +82,13 @@ public class RacerGame extends Game {
         finishLine = new FinishLine();
         progressBar = new ProgressBar(RACE_GOAL_CARS_COUNT);
         drawScene();
+    }
+
+    private void win(){
+        isGameStopped = true;
+        showMessageDialog(Color.NONE, "Вы выиграли!", Color.GREEN, 24);
+        stopTurnTimer();
+
     }
 
     private void gameOver(){
@@ -116,6 +131,7 @@ public class RacerGame extends Game {
     private FinishLine finishLine;
     private boolean isGameStopped;
     private ProgressBar progressBar;
+    private int score;
 
     private static final int RACE_GOAL_CARS_COUNT = 40;
 }

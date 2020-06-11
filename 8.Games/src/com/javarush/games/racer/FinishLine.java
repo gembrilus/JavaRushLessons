@@ -14,5 +14,9 @@ public class FinishLine extends GameObject {
         if(isVisible) y+=boost;
     }
 
+    public boolean isCrossed(PlayerCar player){
+        return (player.y + player.height) < this.y;
+    }
+
     private boolean isVisible = false;
 }

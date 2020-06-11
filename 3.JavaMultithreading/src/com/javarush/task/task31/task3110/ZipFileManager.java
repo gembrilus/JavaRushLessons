@@ -192,8 +192,8 @@ public class ZipFileManager {
             while (zipEntry != null) {
                 // Поля "размер" и "сжатый размер" не известны, пока элемент не будет прочитан
                 // Давайте вычитаем его в какой-то выходной поток
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                copyData(zipInputStream, baos);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                copyData(zipInputStream, bos);
 
                 FileProperties file = new FileProperties(zipEntry.getName(), zipEntry.getSize(), zipEntry.getCompressedSize(), zipEntry.getMethod());
                 files.add(file);

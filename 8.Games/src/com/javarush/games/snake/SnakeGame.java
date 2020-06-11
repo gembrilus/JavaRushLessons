@@ -85,4 +85,8 @@ public class SnakeGame extends Game {
             case SPACE: if(isGameStopped) createGame();
         }
     }
+
+    public static void main(String[] args) {
+// launch();
+    }
 }

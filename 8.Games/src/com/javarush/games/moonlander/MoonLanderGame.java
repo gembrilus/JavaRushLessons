@@ -88,7 +88,7 @@ public class MoonLanderGame extends Game {
     }
 
     private void check(){
-        if(rocket.isCollision(landscape) && rocket.isCollision(platform) && !rocket.isStopped()) gameOver();
+        if(rocket.isCollision(landscape) && !rocket.isCollision(platform)) gameOver();
         else if(rocket.isCollision(platform) && rocket.isStopped()) win();
     }
     private void win(){
