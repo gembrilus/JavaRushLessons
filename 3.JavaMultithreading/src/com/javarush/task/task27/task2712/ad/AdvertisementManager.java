@@ -5,9 +5,7 @@ import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataRow;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AdvertisementManager {
 
@@ -23,9 +21,55 @@ public class AdvertisementManager {
         this.timeSeconds = timeSeconds;
     }
 
-    public void processVideos() {
+    public void processVideos() throws NoVideoAvailableException {
+        List<Advertisement> videoList=new ArrayList<>(storage.list());
+        if (videoList.isEmpty())
+            throw new NoVideoAvailableException();
+
+        videoList.sort((o1, o2) -> {
+            int result = Long.compare(o1.getAmountPerOneDisplaying(), o2.getAmountPerOneDisplaying());
+            if (result != 0)
+                return -result;
+
+            long oneSecondCost1 = o1.getAmountPerOneDisplaying() * 1000 / o1.getDuration();
+            long oneSecondCost2 = o2.getAmountPerOneDisplaying() * 1000 / o2.getDuration();
+
+            return Long.compare(oneSecondCost1, oneSecondCost2);
+        });
+
+        long sumAmount=0;
+        int sumDuration=0;
+
+        List<Advertisement> list=new ArrayList<>();
+
+        int timeLeft = timeSeconds;
+        for (Advertisement advertisement : videoList) {
+            if (timeLeft < advertisement.getDuration() || advertisement.getHits()<=0) {
+                continue;
+            }
+            list.add(advertisement);
+            sumAmount+=advertisement.getAmountPerOneDisplaying();
+            sumDuration+=advertisement.getDuration();
+            timeLeft -= advertisement.getDuration();
+        }
+
+        if (timeLeft == timeSeconds) {
+            throw new NoVideoAvailableException();
+        }
+
+        StatisticManager.getInstance().register(new VideoSelectedEventDataRow(list, sumAmount, sumDuration));
+
+        for (Advertisement advertisement : list) {
+            ConsoleHelper.writeMessage(advertisement.getName() + " is displaying... "
+                    + advertisement.getAmountPerOneDisplaying() + ", "
+                    + advertisement.getAmountPerOneDisplaying() * 1000 / advertisement.getDuration());
+            advertisement.revalidate();
+        }
+    }
+
+    /*public void processVideos() {
         List<Advertisement> videos = storage.list().stream()
-                .filter(adv -> adv.getDuration() <= timeSeconds && adv.getAmountPerOneDisplaying() != 0)
+                .filter(adv -> adv.getDuration() <= timeSeconds && adv.getAmountPerOneDisplaying() != 0 && adv.getHits() != 0)
                 .sorted(Comparator
                         .comparingLong(Advertisement::getAmountPerOneDisplaying)
                         .thenComparingLong(Advertisement::getDuration)
@@ -33,6 +77,10 @@ public class AdvertisementManager {
                         .reversed()
                 )
                 .collect(Collectors.toList());
+
+        if (videos.isEmpty()){
+            throw new NoVideoAvailableException();
+        }
 
         select(videos);
 
@@ -43,6 +91,7 @@ public class AdvertisementManager {
         registerEvent(bestVideoSet);
 
         bestVideoSet.forEach(adv -> {
+            adv.revalidate();
             long amount = adv.getAmountPerOneDisplaying();
             ConsoleHelper.writeMessage(adv.getName()
                     + " is displaying... "
@@ -101,5 +150,5 @@ public class AdvertisementManager {
                         totalDuration(list)
                 )
         );
-    }
+    }*/
 }

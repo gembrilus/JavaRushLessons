@@ -1,43 +1,30 @@
 package com.javarush.task.task27.task2712;
 
+
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.CookedOrderEventDataRow;
 import com.javarush.task.task27.task2712.statistic.event.EventDataRow;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class DirectorTablet {
-
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 
     public void printAdvertisementProfit() {
-        SortedMap<Date, Double> map = StatisticManager.getInstance().getAdvertisementStatistic();
         double totalSum = 0.0;
-
-        for (Map.Entry<Date, Double> pair : map.entrySet()) {
+        for (Map.Entry<Date, Double> pair : StatisticManager.getInstance().getAdvertisementStatistic().entrySet()) {
             double sum = pair.getValue();
-            if (Double.compare(sum, 0.0) > 0) {
-                totalSum += sum;
                 ConsoleHelper.writeMessage(
-                        String.format(
-                                Locale.ENGLISH,
-                                "%s - %.2f",
-                                sdf.format(pair.getKey()),
-                                sum
-                        )
+                        String.format(Locale.ENGLISH, "%s - %.2f", sdf.format(pair.getKey()), sum)
                 );
-            }
+                totalSum += sum;
         }
-
-        ConsoleHelper.writeMessage(
-                String.format(
-                        Locale.ENGLISH,
-                        "Total - %.2f%n",
-                        totalSum
-                )
-        );
+        ConsoleHelper.writeMessage(String.format(Locale.ENGLISH, "Total - %.2f", totalSum));
     }
 
     public void printCookWorkloading() {
@@ -63,13 +50,12 @@ public class DirectorTablet {
                 }
         );
     }
-
-    public void printActiveVideoSet() {
-
-    }
-
-    public void printArchivedVideoSet() {
+    public void printActiveVideoSet()
+    {
 
     }
+    public void printArchivedVideoSet()
+    {
 
+    }
 }
