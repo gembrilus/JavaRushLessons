@@ -13,5 +13,6 @@ public class Solution {
         System.out.println(logParser.execute("get ip for date = \"30.01.2014 12:56:22\""));
         System.out.println(logParser.execute("get ip for user = \"Eduard Petrovich Morozko\" and date between \"11.12.2013 0:00:00\" and \"03.01.2014 23:59:59\""));
         System.out.println(logParser.execute("get ip for event = \"WRITE_MESSAGE\" and date between \"11.12.2013 0:00:00\" and \"03.01.2014 23:59:59\""));
+        System.out.println(logParser.execute("get date for event = \"WRITE_MESSAGE\" and date between \"11.12.2013 0:00:00\" and \"03.01.2014 23:59:59\""));
     }
 }

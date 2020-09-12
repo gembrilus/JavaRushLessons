@@ -10,12 +10,7 @@ import java.util.List;
 public class AdvertisementManager {
 
     private AdvertisementStorage storage = AdvertisementStorage.getInstance();
-    private StatisticManager statisticManager = StatisticManager.getInstance();
     private int timeSeconds;
-
-    private List<Advertisement> bestVideoSet;
-    private int bestDuration;
-    private long bestAmount;
 
     public AdvertisementManager(int timeSeconds) {
         this.timeSeconds = timeSeconds;
@@ -27,9 +22,8 @@ public class AdvertisementManager {
             throw new NoVideoAvailableException();
 
         videoList.sort((o1, o2) -> {
-            int result = Long.compare(o1.getAmountPerOneDisplaying(), o2.getAmountPerOneDisplaying());
-            if (result != 0)
-                return -result;
+            int result = Long.compare(o2.getAmountPerOneDisplaying(), o1.getAmountPerOneDisplaying());
+            if (result != 0) return result;
 
             long oneSecondCost1 = o1.getAmountPerOneDisplaying() * 1000 / o1.getDuration();
             long oneSecondCost2 = o2.getAmountPerOneDisplaying() * 1000 / o2.getDuration();

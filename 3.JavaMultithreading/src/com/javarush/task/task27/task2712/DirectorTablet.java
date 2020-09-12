@@ -1,6 +1,7 @@
 package com.javarush.task.task27.task2712;
 
 
+import com.javarush.task.task27.task2712.ad.StatisticAdvertisementManager;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.CookedOrderEventDataRow;
 import com.javarush.task.task27.task2712.statistic.event.EventDataRow;
@@ -19,10 +20,10 @@ public class DirectorTablet {
         double totalSum = 0.0;
         for (Map.Entry<Date, Double> pair : StatisticManager.getInstance().getAdvertisementStatistic().entrySet()) {
             double sum = pair.getValue();
-                ConsoleHelper.writeMessage(
-                        String.format(Locale.ENGLISH, "%s - %.2f", sdf.format(pair.getKey()), sum)
-                );
-                totalSum += sum;
+            ConsoleHelper.writeMessage(
+                    String.format(Locale.ENGLISH, "%s - %.2f", sdf.format(pair.getKey()), sum)
+            );
+            totalSum += sum;
         }
         ConsoleHelper.writeMessage(String.format(Locale.ENGLISH, "Total - %.2f", totalSum));
     }
@@ -50,12 +51,20 @@ public class DirectorTablet {
                 }
         );
     }
-    public void printActiveVideoSet()
-    {
 
+    public void printActiveVideoSet() {
+        StatisticAdvertisementManager.getInstance().getActiveVideos().stream()
+                .sorted((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()))
+                .forEach(adv ->
+                        ConsoleHelper.writeMessage(String.format(Locale.ENGLISH, "%s - %d", adv.getName(), adv.getHits()))
+                );
     }
-    public void printArchivedVideoSet()
-    {
 
+    public void printArchivedVideoSet() {
+        StatisticAdvertisementManager.getInstance().getArchivedVideos().stream()
+                .sorted((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()))
+                .forEach(adv ->
+                        ConsoleHelper.writeMessage(String.format(Locale.ENGLISH, "%s", adv.getName()))
+                );
     }
 }

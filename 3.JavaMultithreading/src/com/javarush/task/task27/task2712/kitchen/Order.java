@@ -8,10 +8,14 @@ import java.util.List;
 
 public class Order {
     private final Tablet tablet;
-    private final List<Dish> dishes;
+    protected List<Dish> dishes;
 
     public Order(Tablet tablet) throws IOException {
         this.tablet = tablet;
+        initDishes();
+    }
+
+    protected void initDishes() throws IOException {
         dishes = ConsoleHelper.getAllDishesForOrder();
     }
 

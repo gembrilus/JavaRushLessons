@@ -1,29 +1,49 @@
 package com.javarush.task.task27.task2712;
 
 import com.javarush.task.task27.task2712.kitchen.Cook;
+import com.javarush.task.task27.task2712.kitchen.Order;
 import com.javarush.task.task27.task2712.kitchen.Waiter;
+import com.javarush.task.task27.task2712.statistic.StatisticManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Restaurant {
+    private static final int ORDER_CREATING_INTERVAL = 100;
+    private static final LinkedBlockingQueue<Order> orderQueue = new LinkedBlockingQueue<>();
+
+
     public static void main(String[] args) {
-        Tablet tablet = new Tablet(1);
-        Tablet tablet2 = new Tablet(2);
-        Tablet tablet3 = new Tablet(3);
-        Cook cook = new Cook("Amigo");
+        List<Tablet> tablets = new ArrayList<>();
+
+        Cook cook1 = new Cook("Amigo");
+        cook1.setQueue(orderQueue);
         Cook cook2 = new Cook("Max");
-        Cook cook3 = new Cook("Vasya");
+        cook2.setQueue(orderQueue);
+
         Waiter waiter = new Waiter();
 
-        tablet.addObserver(cook);
-        cook.addObserver(waiter);
-        tablet2.addObserver(cook2);
+        cook1.addObserver(waiter);
         cook2.addObserver(waiter);
-        tablet3.addObserver(cook3);
-        cook3.addObserver(waiter);
 
-        tablet.createOrder();
-        tablet2.createOrder();
-        tablet2.createOrder();
-        tablet.createOrder();
+        StatisticManager statisticManager = StatisticManager.getInstance();
+        statisticManager.register(cook1);
+        statisticManager.register(cook2);
+
+        for (int i = 0; i < 5; i++) {
+            Tablet tablet = new Tablet(i);
+            tablet.setQueue(orderQueue);
+            tablets.add(tablet);
+        }
+
+        Thread task = new Thread(new RandomOrderGeneratorTask(tablets, ORDER_CREATING_INTERVAL));
+        task.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignore) {
+        }
+        task.interrupt();
 
         DirectorTablet directorTablet = new DirectorTablet();
         directorTablet.printActiveVideoSet();
