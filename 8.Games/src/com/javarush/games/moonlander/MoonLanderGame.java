@@ -42,6 +42,7 @@ public class MoonLanderGame extends Game {
                 isRightPressed = true;
                 isLeftPressed = false;
                 break;
+            case ESCAPE: System.exit(0); break;
             case SPACE:
                 if(isGameStopped) createGame();
         }

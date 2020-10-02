@@ -23,12 +23,29 @@ public class EnemyFleet {
         for(EnemyShip ship: ships) ship.draw(game);
     }
     private void createShips(){
-        ships = new ArrayList<EnemyShip>();
+        ships = new ArrayList<>();
         for (int i = 0; i < COLUMNS_COUNT; i++){
             for (int j = 0; j < ROWS_COUNT; j++){
                 ships.add(new EnemyShip(i*STEP, j*STEP+12));
             }
         }
+        ships.add(new Boss((STEP * COLUMNS_COUNT >> 1) - (ShapeMatrix.BOSS_ANIMATION_FIRST.length >> 1) - 1, 5));
+    }
+
+    public Bullet fire(Game game){
+        if(ships.isEmpty()) return null;
+        int random = game.getRandomNumber(100 / SpaceInvadersGame.COMPLEXITY);
+        if (random > 0) return null;
+        random = game.getRandomNumber(ships.size());
+        return ships.get(random).fire();
+    }
+
+    public double getBottomBorder(){
+        return ships.stream().mapToDouble(ship -> ship.y + ship.height).max().orElse(SpaceInvadersGame.HEIGHT);
+    }
+
+    public int getShipsCount(){
+        return ships.size();
     }
 
     public void move(){
@@ -64,7 +81,28 @@ public class EnemyFleet {
         return max;
     }
 
+    public int verifyHit(List<Bullet> bullets) {
+        if (bullets.isEmpty()) return 0;
+        final int[] score = {0};
+        ships.forEach(ship -> {
+            boolean isCollision = false;
+            for (Bullet bullet: bullets) {
+                isCollision |= ship.isCollision(bullet);
+                if (isCollision && ship.isAlive && bullet.isAlive) {
+                    score[0] += ship.score;
+                    ship.kill();
+                    bullet.kill();
+                }
+            }
+        });
+        return score[0];
+    }
+
+    public void deleteHiddenShips(){
+        ships.removeIf(ship -> !ship.isVisible());
+    }
+
     private double getSpeed(){
-        return 2.0 > 3.0/ships.size() ? 3.0/ships.size() : 2.0;
+        return Math.min(2.0, 3.0 / ships.size());
     }
 }

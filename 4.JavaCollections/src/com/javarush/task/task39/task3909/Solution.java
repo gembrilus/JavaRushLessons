@@ -8,7 +8,7 @@ public class Solution {
         System.out.println(isOneEditAway("maxim", "") + " expected: false");
         System.out.println(isOneEditAway("maxim", "taxit") + " expected: false");
         System.out.println(isOneEditAway("maxim", "maxit") + " expected: true");
-        System.out.println(isOneEditAway("maxim", "maim") + " expected: true");
+        System.out.println(isOneEditAway("maxim", "maxam") + " expected: true");
         System.out.println(isOneEditAway("ma", "max") + " expected: true");
         System.out.println(isOneEditAway("m", "ma") + " expected: true");
         System.out.println(isOneEditAway("m", "am") + " expected: true");
@@ -23,29 +23,31 @@ public class Solution {
         System.out.println(isOneEditAway("KissMyShinyReactor!", "KissMyShinyReactor") + " expected: true");
         System.out.println(isOneEditAway("KissMyShinyReactor", "KissMyShinyReactor!") + " expected: true");
     }
+
+
     public static boolean isOneEditAway(String first, String second) {
-        String subFirst = first;
-        String subSecond = second;
-        for (int i = 0; i <= first.length(); i++) {
-            for (int j = 0; j <= second.length(); j++) {
-                if (subFirst.equals(subSecond)) return true;
-                if (j == second.length()) {
-                    subSecond = second;
-                    break;
+        int len1 = first.length();
+        int len2 = second.length();
+        int difference = Math.abs(len1 - len2);
+
+        if (difference > 1) return false;
+
+        if (first.isEmpty() && second.isEmpty()) return true;
+        if (first.equals(second)) return true;
+
+        StringBuilder max = (len1 >= len2) ? new StringBuilder(first) : new StringBuilder(second);
+        StringBuilder min = (len1 < len2) ? new StringBuilder(first) : new StringBuilder(second);
+
+        for (int i = 0; i < min.length(); i++) {
+            if (max.charAt(i) != min.charAt(i)) {
+                max.deleteCharAt(i);
+                if (difference == 0) {
+                    min.deleteCharAt(i);
                 }
-                subSecond = removeCharByIndex(second, j);
-            }
-            if (i == first.length()) {
                 break;
             }
-            subFirst = removeCharByIndex(first, i);
         }
-        return false;
-    }
-
-    private static String removeCharByIndex(String origin, int i){
-        StringBuilder builder = new StringBuilder(origin);
-        builder.deleteCharAt(i);
-        return builder.toString();
+        if (max.length() != min.length()) max.deleteCharAt(max.length() - 1);
+        return max.toString().equals(min.toString());
     }
 }
